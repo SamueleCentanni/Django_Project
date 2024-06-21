@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Seleziona una immagine{% endblock %}
+
+{% block content %}
+    <h1>Seleziona una immagine</h1>
+    <img src="{{ request.GET.url }}" class="image-preview">
+    <form method="post"> {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="Seleziona!">
+    </form>
+{% endblock %}
