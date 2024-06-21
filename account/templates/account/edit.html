@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Modifica il tuo profilo{% endblock %}
+
+{% block content %}
+    <h1>Modifica il tuo profilo!</h1>
+    <p>Utilizza il seguente form per modificare il tuo profilo</p>
+
+    <form method="post" enctype="multipart/form-data"> {% csrf_token %}
+        {{user_form.as_p}}
+        <p>Date of birth (YYYYY-MM-DD):</p>
+        <p> {{ profile_form.date_of_birth }} </p>
+        <p>photo:</p>
+        <p> {{ profile_form.photo }}</p>
+        
+        <p><input type="submit" value="Modifica"></p>
+    </form>
+{% endblock %}
