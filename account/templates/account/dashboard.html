@@ -3,6 +3,10 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
- <h1>Dashboard</h1>
- <p>Benvenuto nella tua dashboard. Puoi <a href="{% url "edit" %}">modificare il tuo profilo</a> oppure <a href="{% url "password_change" %}">cambiare password</a>.</p>
+  <h1>Dashboard</h1>
+  {% with total_images_created=request.user.images_created.count %}
+    <p>Benvenuto nella tua dashboard. Hai aggiunto {{ total_images_created }} immagini.</p>
+  {% endwith %}
+  <p>Usa il seguente pulsante per salvare immagini da altri siti web → <a href="javascript:{% include "bookmarklet_launcher.js" %}" class="button">Aggiungi immagine</a></p>
+  <p>Puoi anche <a href="{% url "edit" %}">modificare il tuo profilo</a> o <a href="{% url "password_change" %}">cambiare la tua password</a>.</p>
 {% endblock %}
