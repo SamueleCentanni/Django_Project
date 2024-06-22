@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'social_django',
     'images',
+    'easy_thumbnails'
 ]
 
 MIDDLEWARE = [
@@ -123,6 +124,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "account\\static")]
+STATICFILES_DIRS2 = [os.path.join(BASE_DIR, "account\\static")]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
