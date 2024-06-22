@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'social_django',
     'images',
-    'easy_thumbnails'
+    'easy_thumbnails',
+    'actions',
 ]
 
 MIDDLEWARE = [
@@ -151,3 +152,6 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1029419724566-ci9orsbes3ngkg6bt9m0srtvecdspjs2.
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
 
 
+ABSOLUTE_URL_OVERRIDES = {
+    'auth.user': lambda u: reverse_lazy('user_detail', args=[u.username]),
+}

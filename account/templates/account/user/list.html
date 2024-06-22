@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+
+{% block title %}Utenti{% endblock %}
+
+{% block content %}
+    <h1>Utenti</h1>
+
+    <div class="container">
+        <div class="row">
+            {% for user in users %}
+                <div class="col-md-4">
+                    <div class="card" style="width: 18rem; margin: 10px;">
+                        <a href="{{ user.get_absolute_url }}">
+                            <img src="{% thumbnail user.profile.photo 180x180 %}" class="card-img-top" alt="{{ user.get_full_name }}">
+                        </a>
+                        <div class="card-body">
+                            <p class="card-text">
+                                <a href="{{ user.get_absolute_url }}" class="title">{{ user.get_full_name }}</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+   
+{% endblock %}
+
