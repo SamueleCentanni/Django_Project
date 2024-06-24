@@ -1,6 +1,7 @@
-
 {% extends "base.html" %}
 {% load thumbnail %}
+
+<!-- Gestisce la detail-view di ogni profilo, con possibilità di seguirlo e di vedere le foto che ha pubblicato -->
 
 {% block title %}{{ user.get_full_name }}{% endblock %}
 
@@ -14,13 +15,15 @@
       <span class="total">{{ total_followers }}</span>
       follower{{ total_followers|pluralize }}
     </span>
-    <a href="#" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow" class="follow button">
-      {% if request.user not in user.followers.all %}
-        Follow
-      {% else %}
-        Unfollow
-      {% endif %}
-    </a>
+    {% if user != request.user %}
+      <a href="#" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow" class="follow button">
+        {% if request.user not in user.followers.all %}
+          Follow
+        {% else %}
+          Unfollow
+        {% endif %}
+      </a>
+    {% endif %}
     <div id="image-list" class="image-container">
       {% include "images/image/list_images.html" with images=user.images_created.all %}
     </div>
@@ -39,6 +42,13 @@
           .addEventListener('click', function(e){
     e.preventDefault();
     var followButton = this;
+
+    // Check if the follow action is for the same user
+    if (followButton.dataset.id === '{{ request.user.id }}') {
+      // Hide or disable the follow button for self-following
+      followButton.style.display = 'none';  // or use .disabled = true; to disable
+      return;  // Exit function
+    }
 
     // add request body
     var formData = new FormData();
