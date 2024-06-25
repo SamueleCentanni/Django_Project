@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Conferma Cancellazione{% endblock %}
+
+{% block content %}
+  <h1>Conferma Cancellazione</h1>
+  <p>Sei sicuro di voler cancellare l'immagine "{{ image.title }}"?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Conferma</button>
+    <a href="{{ image.get_absolute_url }}">Annulla</a>
+  </form>
+{% endblock %}

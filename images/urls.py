@@ -15,4 +15,6 @@ urlpatterns = [
     path('like/', views.image_like, name='like'),
     path('', views.image_list, name='list'),
     path('ranking/', views.image_ranking, name='ranking'),
+    path('images/image_list/', views.user_image_list, name='your_images'),
+    path('delete/<int:pk>/', views.ImageDeleteView.as_view(), name='delete'),
 ]

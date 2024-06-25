@@ -11,6 +11,10 @@ from actions.utils import create_action
 import redis
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.views.generic.edit import DeleteView
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 # connect to redis
 r = redis.Redis(host=settings.REDIS_HOST,
@@ -50,6 +54,16 @@ def image_detail(request, id, slug):
                    'total_views': total_views,
                    })
 
+
+class ImageDeleteView(DeleteView, LoginRequiredMixin, ):
+    model = Image
+    template_name = 'images/image/delete_img.html'
+    context_object_name = 'image'
+    success_url = reverse_lazy('images:your_images')
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.filter(user=self.request.user)
+
 @login_required
 @require_POST
 def image_like(request):
@@ -69,8 +83,9 @@ def image_like(request):
     return JsonResponse({'status': 'error'})
 
 @login_required
-def image_list(request):
-    images = Image.objects.all()
+def image_list(request, images=None): 
+    if not images:
+        images = Image.objects.exclude(user=request.user)
     # 8 immagini per volta
     paginator = Paginator(images, 8)
     page = request.GET.get('page')
@@ -93,6 +108,11 @@ def image_list(request):
         return render(request, 'images/image/list_images.html', {'section': 'images', 'images': images, 'user': User.user})
 
     return render(request, 'images/image/list.html', {'section': 'images', 'images': images})
+
+@login_required
+def user_image_list(request):
+    images = Image.objects.filter(user=request.user)
+    return image_list(request, images)
 
 @login_required
 def image_ranking(request):

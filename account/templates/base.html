@@ -26,7 +26,10 @@
                 </li>  
                 <li {% if section == "images" %}class="selected"{% endif %}> 
                     <a href="{% url "images:ranking" %}">Immagini più viste</a>
-                </li>    
+                </li> 
+                <li {% if section == "people" %}class="selected"{% endif %}> 
+                    <a href="{% url "images:your_images" %}">Le tue immagini</a>
+                </li>
             </ul>
         {% endif %}
 

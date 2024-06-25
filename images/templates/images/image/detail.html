@@ -27,6 +27,7 @@
                     {% endif %}
                 </a>
             </div>
+            
             {{ image.description|linebreaks }}
         </div>
 
@@ -40,6 +41,12 @@
                 Nessun Like
             {% endfor %}
         </div>
+        {% if request.user == image.user %}
+            <div class="d-grid gap-2 mt-3">
+                <a href="{% url 'images:delete' image.id %}" class="btn btn-primary" role="button">Elimina immagine</a>
+            </div>
+        {% endif %}
+
     {% endwith %}
 {% endblock %}
 

@@ -83,6 +83,7 @@ def edit(request):
     return render(request, 'account/edit.html', {'user_form': user_form, 'profile_form': profile_form})
 
 
+
 @login_required
 def user_list(request):
     users = User.objects.filter(is_active=True)
