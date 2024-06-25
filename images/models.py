@@ -26,3 +26,16 @@ class Image(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
             super(Image, self).save(*args, **kwargs)
+
+
+class Comment(models.Model):
+    image = models.ForeignKey(Image, related_name='comments', on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='comments', on_delete=models.CASCADE)
+    text = models.TextField(max_length=200)
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ('-created',)
+
+    def __str__(self):
+        return f'Commento di {self.user.username} su {self.image.title}'

@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import ImageCreateForm, AddLocalImage
-from .models import Image
+from .forms import ImageCreateForm, AddLocalImage, CommentForm
+from .models import Image, Comment
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.http import HttpResponse
@@ -40,6 +40,25 @@ def image_create(request):
     
     return render(request, 'images/image/create.html', {'section': 'images', 'form': form})
 
+@login_required
+def image_comment(request, image_id):
+    image = get_object_or_404(Image, id=image_id)
+    comments = image.comments.all()
+    
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.image = image
+            new_comment.user = request.user
+            new_comment.save()
+            return redirect('images:detail', id=image.id, slug=image.slug)
+    else:
+        form = CommentForm()
+    
+    return render(request, 'images/image/comments.html', {'section': 'comments', 'form': form, 'comments': comments})
+
+
 
 def image_detail(request, id, slug):
     image = get_object_or_404(Image, id=id, slug=slug)
@@ -47,6 +66,7 @@ def image_detail(request, id, slug):
     total_views = r.incr(f'image:{image.id}:views')
     # increment image ranking by 1
     r.zincrby('image_ranking', 1, image.id)
+
     return render(request,
                   'images/image/detail.html',
                   {'section': 'images',

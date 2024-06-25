@@ -47,8 +47,14 @@
             </div>
         {% endif %}
 
-    {% endwith %}
-{% endblock %}
+        {% endwith %}
+            {% if user.is_authenticated %}
+            <p><a href="{% url 'images:image_comment' image.id %}">Leggi o aggiungi un commento</a></p>
+            {% else %}
+            <p><a href="{% url 'login' %}">Accedi</a> per aggiungere un commento.</p>
+        {% endif %}
+        
+{% endblock %}  
 
 {% block domready %}
   const url = '{% url "images:like" %}';

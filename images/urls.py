@@ -17,4 +17,5 @@ urlpatterns = [
     path('ranking/', views.image_ranking, name='ranking'),
     path('images/image_list/', views.user_image_list, name='your_images'),
     path('delete/<int:pk>/', views.ImageDeleteView.as_view(), name='delete'),
+    path('images/<int:image_id>/comment/', views.image_comment, name='image_comment'),
 ]

@@ -1,0 +1,23 @@
+<!-- comments.html -->
+{% extends "base.html" %}
+
+{% block title %}Commenti{% endblock %}
+
+{% block content %}
+<h1>Commenti</h1>
+<ul>
+    {% for comment in comments %}
+    <li>
+        <strong>{{ comment.user.username }}</strong>: {{ comment.text }}
+        <br><small>Pubblicato il: {{ comment.created }}</small>
+    </li>
+    {% endfor %}
+</ul>
+
+<h2>Aggiungi un commento</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Invia</button>
+</form>
+{% endblock %}

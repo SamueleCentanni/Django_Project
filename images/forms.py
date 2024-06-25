@@ -1,5 +1,5 @@
 from django import forms
-from .models import Image
+from .models import Image, Comment
 from urllib import request
 from django.core.files.base import ContentFile
 from django.utils.text import slugify
@@ -38,3 +38,8 @@ class AddLocalImage(forms.ModelForm):
     class Meta:
         model = Image
         fields = ('title', 'description', 'image')
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('text',)
