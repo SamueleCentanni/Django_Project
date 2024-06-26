@@ -1,8 +1,8 @@
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
+from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm, ProfilePrivacyForm
 from .models import Profile, Contact
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -115,3 +115,17 @@ def user_follow(request):
             return JsonResponse({'status': 'error'})
     return JsonResponse({'status': 'error'})
 
+@login_required
+def private_profile(request):
+    profile = Profile.objects.get(user=request.user)
+    
+    if request.method == 'POST':
+        form = ProfilePrivacyForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Impostazioni sulla privacy del profilo aggiornate con successo')
+            return redirect('dashboard')
+    else:
+        form = ProfilePrivacyForm(instance=profile)
+    
+    return render(request, 'account/user/profile_privacy.html', {'form': form, 'profile': profile})

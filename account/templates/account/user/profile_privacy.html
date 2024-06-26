@@ -1,0 +1,24 @@
+<!-- profiles/profile_privacy.html -->
+{% extends "base.html" %}
+{% block title %}Impostazione Privacy{% endblock %}
+
+{% block content %}
+<h1>Impostazioni sulla Privacy del Profilo</h1>
+<form method="post">
+    {% csrf_token %}
+    <p>
+        Il tuo profilo è 
+            {% if profile.private %}
+                privato
+            {% else %}
+                pubblico
+            {% endif %}
+    </p>
+    <br/>
+    <p>Vuoi mettere il tuo profilo {% if profile.private %} pubblico{% else %} privato{% endif %}?</p>
+    {{ form.as_p }}
+    <button type="submit">Salva modifiche</button>
+</form>
+{% endblock %}
+
+

@@ -52,6 +52,8 @@ def image_comment(request, image_id):
             new_comment.image = image
             new_comment.user = request.user
             new_comment.save()
+            messages.success(request, 'Commento aggiunto con successo')
+            create_action(request.user, 'ha commentato l\'immagine ', image)
             return redirect('images:detail', id=image.id, slug=image.slug)
     else:
         form = CommentForm()
@@ -83,6 +85,12 @@ class ImageDeleteView(DeleteView, LoginRequiredMixin, ):
     def get_queryset(self):
         qs = super().get_queryset()
         return qs.filter(user=self.request.user)
+    
+    # aggiunta per poter mostrare il messaggio di eliminazione immagine
+    def delete(self, request, *args, **kwargs):
+        response = super().delete(request, *args, **kwargs)
+        messages.success(self.request, 'Immagine eliminata con successo')
+        return response
 
 @login_required
 @require_POST

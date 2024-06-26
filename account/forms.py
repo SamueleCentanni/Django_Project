@@ -30,3 +30,8 @@ class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ('date_of_birth', 'photo')
+
+class ProfilePrivacyForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['private',]
