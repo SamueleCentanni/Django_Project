@@ -5,7 +5,7 @@
 {% block content %}
     <h1>{{image.title}}</h1>
     <button type="button" class="btn btn-outline-dark"><a href="{% url "images:list" %}">Indietro</a></button>
-    {% if not profile.private or request.user == image.user %}
+    {% if can_view %}
     {% load thumbnail %}
         <a href="{{ image.image.url }}">
             <img src="{% thumbnail image.image 300x0 %}" class="image-detail">

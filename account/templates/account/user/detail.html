@@ -11,7 +11,7 @@
     <img src="{% thumbnail user.profile.photo 180x180 %}" class="user-detail">
   </div>
   {% with total_followers=user.followers.count %}
-    {% if not profile.private or user == request.user %}
+    {% if can_view %}
     <span class="count">
       <span class="total">{{ total_followers }}</span>
       follower{{ total_followers|pluralize }}
@@ -26,18 +26,12 @@
         {% endif %}
       </a>
     {% endif %}
-    {% if profile.private %}
-      {% if user == request.user %}
+    {% if can_view %}
         <div id="image-list" class="image-container">
           {% include "images/image/list_images.html" with images=user.images_created.all %}
         </div>
-      {% else %}
-        <h2>Questo profilo è Profilo Privato</h2>
-    {% endif %}
     {% else %}
-      <div id="image-list" class="image-container">
-        {% include "images/image/list_images.html" with images=user.images_created.all %}
-      </div>
+        <h2>Questo profilo è privato</h2>
     {% endif %}
 
   {% endwith %}

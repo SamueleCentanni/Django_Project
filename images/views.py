@@ -14,7 +14,7 @@ from django.contrib.auth.models import User
 from django.views.generic.edit import DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from account.models import Profile
+from account.models import Profile, Contact
 
 
 # connect to redis
@@ -71,12 +71,25 @@ def image_detail(request, id, slug):
     # increment image ranking by 1
     r.zincrby('image_ranking', 1, image.id)
 
+    # creo la logica per poter visualizzare o meno l'immagine:
+    # essa è visualizzabile se:
+    # - Il profilo è pubblico.
+    # - L'utente che vuole vedere l'immagine è anche il proprietario dell'immagine.
+    # - L'utente che vuole vedere l'immagine segue il proprietario dell'immagine.
+    
+    # Verifica se l'utente loggato segue il proprietario dell'immagine
+    follows = Contact.objects.filter(user_from=request.user, user_to=image.user).exists()
+
+    # Determina se l'immagine deve essere visibile
+    can_view = not profile.private or request.user == image.user or follows 
+    
     return render(request,
                   'images/image/detail.html',
                   {'section': 'images',
                    'image': image,
                    'total_views': total_views,
                    'profile': profile,
+                   'can_view': can_view,
                    })
 
 
@@ -116,17 +129,22 @@ def image_like(request):
 @login_required
 def image_list(request, images=None): 
     if not images:
-        images = Image.objects.exclude(user=request.user)
-        profiles = Profile.objects.all()
-
-        users_with_private_profiles = []
+        images = Image.objects.all()
+        # Trova tutti i profili privati
+        private_profiles = Profile.objects.filter(private=True)
+        users_with_private_profiles = [profile.user.id for profile in private_profiles]
         
-        for profile in profiles:
-            if profile.private:
-                users_with_private_profiles.append(profile.user.id)
-
+        # Trova gli utenti che l'utente loggato segue
+        followed_users = Contact.objects.filter(user_from=request.user).values_list('user_to_id', flat=True)
+        
         images = images.exclude(user_id__in=users_with_private_profiles)
 
+        # Escludi le immagini dell'utente loggato
+        images = images.exclude(user=request.user)
+
+        # Includi le immagini degli utenti seguiti dall'utente loggato (anche se sono privati)
+        images = images.union(Image.objects.filter(user_id__in=followed_users))
+        
     # 8 immagini per volta
     paginator = Paginator(images, 8)
     page = request.GET.get('page')
@@ -146,7 +164,7 @@ def image_list(request, images=None):
         images = paginator.page(paginator.num_pages)
     
     if images_only:
-        return render(request, 'images/image/list_images.html', {'section': 'images', 'images': images, 'user': User.user})
+        return render(request, 'images/image/list_images.html', {'section': 'images', 'images': images, 'user': request.user})
 
     return render(request, 'images/image/list.html', {'section': 'images', 'images': images})
 

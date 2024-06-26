@@ -10,6 +10,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from actions.utils import create_action
 from actions.models import Action
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 # Create your views here.
@@ -86,14 +87,33 @@ def edit(request):
 
 @login_required
 def user_list(request):
-    users = User.objects.filter(is_active=True)
-    return render(request, 'account/user/list.html', {'section': 'people', 'users': users})
+    user_list = User.objects.all()  # Ottieni tutti gli utenti
+    paginator = Paginator(user_list, 12)  # Numero di utenti per pagina
+
+    page = request.GET.get('page')
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        # Se la pagina non è un intero, mostra la prima pagina
+        users = paginator.page(1)
+    except EmptyPage:
+        # Se la pagina è fuori limite (es. 9999), mostra l'ultima pagina di risultati
+        users = paginator.page(paginator.num_pages)
+
+    return render(request, 'account/user/list.html', {'users': users})
+
 
 @login_required
 def user_detail(request, username):
     user = get_object_or_404(User, username=username, is_active=True)
     profile = get_object_or_404(Profile, user=user)
-    return render(request, 'account/user/detail.html', {'section': 'people', 'user': user, 'profile': profile})
+
+    # Verifica se l'utente loggato segue il proprietario dell'immagine
+    follows = Contact.objects.filter(user_from=request.user, user_to=user).exists()
+
+    # Determina se l'immagine deve essere visibile
+    can_view = not profile.private or request.user == user or follows 
+    return render(request, 'account/user/detail.html', {'section': 'people', 'user': user, 'profile': profile, 'can_view': can_view})
 
 
 @login_required

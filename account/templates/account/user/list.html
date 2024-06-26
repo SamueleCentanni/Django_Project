@@ -9,14 +9,14 @@
     <div class="container text-center">
         <div class="row">
             {% for user in users %}
-                <div class="col-md">
-                    <div class="card" style="width: 18rem; margin: 10px;">
+                <div class="col-md-3">  <!-- Utilizzo col-md-3 per avere 4 colonne per riga -->
+                    <div class="card mb-3">
                         <a href="{{ user.get_absolute_url }}">
                             <img src="{% thumbnail user.profile.photo 180x180 %}" class="card-img-top" alt="{{ user.get_full_name }}">
                         </a>
                         <div class="card-body">
                             <p class="card-text">
-                                <a href="{{ user.get_absolute_url }}" class="title">{{ user.get_full_name }}</a>
+                                <a href="{{ user.get_absolute_url }}" class="card-title">{{ user.get_full_name }}</a>
                             </p>
                         </div>
                     </div>
@@ -24,6 +24,21 @@
             {% endfor %}
         </div>
     </div>
-   
-{% endblock %}
 
+    <!-- Paginazione -->
+    <div class="pagination justify-content-center mt-3">
+        {% if users.has_previous %}
+            <a href="?page=1" class="page-link">&laquo; Prima</a>
+            <a href="?page={{ users.previous_page_number }}" class="page-link">Precedente</a>
+        {% endif %}
+
+        <span class="page-link">
+            Pagina {{ users.number }} di {{ users.paginator.num_pages }}
+        </span>
+
+        {% if users.has_next %}
+            <a href="?page={{ users.next_page_number }}" class="page-link">Successiva</a>
+            <a href="?page={{ users.paginator.num_pages }}" class="page-link">Ultima &raquo;</a>
+        {% endif %}
+    </div>
+{% endblock %}
