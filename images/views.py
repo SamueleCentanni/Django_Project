@@ -14,6 +14,7 @@ from django.contrib.auth.models import User
 from django.views.generic.edit import DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from account.models import Profile
 
 
 # connect to redis
@@ -64,6 +65,7 @@ def image_comment(request, image_id):
 
 def image_detail(request, id, slug):
     image = get_object_or_404(Image, id=id, slug=slug)
+    profile = get_object_or_404(Profile, user=image.user)
     # increment total image views by 1
     total_views = r.incr(f'image:{image.id}:views')
     # increment image ranking by 1
@@ -74,6 +76,7 @@ def image_detail(request, id, slug):
                   {'section': 'images',
                    'image': image,
                    'total_views': total_views,
+                   'profile': profile,
                    })
 
 
@@ -114,6 +117,16 @@ def image_like(request):
 def image_list(request, images=None): 
     if not images:
         images = Image.objects.exclude(user=request.user)
+        profiles = Profile.objects.all()
+
+        users_with_private_profiles = []
+        
+        for profile in profiles:
+            if profile.private:
+                users_with_private_profiles.append(profile.user.id)
+
+        images = images.exclude(user_id__in=users_with_private_profiles)
+
     # 8 immagini per volta
     paginator = Paginator(images, 8)
     page = request.GET.get('page')

@@ -36,7 +36,6 @@
         <span class="user">
             {% if request.user.is_authenticated %}
              Benvenuto {{ request.user.first_name }}
-                <li>
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                       Opzioni
                     </a>
@@ -52,7 +51,6 @@
                         </form>
                       </a></li>
                     </ul>
-                </li>
             {% else %}
                 <a href="{% url "login" %}">Login</a>
             {% endif %}

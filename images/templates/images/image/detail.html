@@ -5,6 +5,7 @@
 {% block content %}
     <h1>{{image.title}}</h1>
     <button type="button" class="btn btn-outline-dark"><a href="{% url "images:list" %}">Indietro</a></button>
+    {% if not profile.private or request.user == image.user %}
     {% load thumbnail %}
         <a href="{{ image.image.url }}">
             <img src="{% thumbnail image.image 300x0 %}" class="image-detail">
@@ -51,6 +52,9 @@
             {% if user.is_authenticated %}
                 <a href="{% url 'images:image_comment' image.id %}" type="button" class="btn btn-outline-primary">Leggi o aggiungi un commento</a>
         {% endif %}
+    {% else %}
+     <h2>Non puoi visualizzare l'immagine perchè il profilo di {{image.user}} è privato</h2>
+    {% endif %}
         
 {% endblock %}  
 
