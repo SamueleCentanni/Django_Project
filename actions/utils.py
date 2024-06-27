@@ -9,7 +9,7 @@ def create_action(user, verb, target=None):
     # guardo se qualcuno ha fatto la stessa azione entro un minuto
     now = timezone.now()
     last_minute = now - datetime.timedelta(seconds=60)
-    similar_actions = Action.objects.filter(user_id=user.id, verb=verb, created=last_minute)
+    similar_actions = Action.objects.filter(user_id=user.id, verb=verb, created__gte=last_minute)
     
     if target:
         target_ct = ContentType.objects.get_for_model(target)
@@ -22,5 +22,3 @@ def create_action(user, verb, target=None):
         return True
     
     return False
-
-
