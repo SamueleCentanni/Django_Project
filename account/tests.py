@@ -11,6 +11,7 @@ from .models import Profile, Contact
 # - verificare che un utente correttamente loggato e che segue il nostro profilo PRIVATO, possa vedere tutto -> OK
 # - verificare che un utente correttamente loggato e che NON segue il nostro profilo PRIVATO, possa vedere il profilo ma veda solamente la scritta
 #   "Questo profilo è privarto" -> OK
+
 class UserDetailViewTest(TestCase):
     def setUp(self):
         self.client = Client()
