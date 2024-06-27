@@ -11,7 +11,8 @@ from django.views.decorators.http import require_POST
 from actions.utils import create_action
 from actions.models import Action
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+# Q serve per le query complesse
+from django.db.models import Q  
 
 # Create your views here.
 
@@ -87,8 +88,14 @@ def edit(request):
 
 @login_required
 def user_list(request):
-    user_list = User.objects.all()  # Ottieni tutti gli utenti
-    paginator = Paginator(user_list, 12)  # Numero di utenti per pagina
+    query = request.GET.get('q')
+    if query:
+        user_list = User.objects.filter(Q(username__icontains=query) | Q(first_name__icontains=query))
+    else:
+        user_list = User.objects.all()
+    
+    # Ottieni tutti gli utenti
+    paginator = Paginator(user_list, 4)  # Numero di utenti per pagina
 
     page = request.GET.get('page')
     try:
