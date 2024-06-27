@@ -5,6 +5,14 @@ from datetime import timedelta
 from .models import Action
 from .utils import create_action
 
+# verifico la logica della view: 'create_action'.
+# verifico che:
+# - l'azione venga correttamente creata
+# - se lo STESSO utente ha fatto la STESSA azione in meno di un minuto, allora non deve crearsi nessuna azione 
+# (result == False e Action.objects.count() == 1)
+# - se però lo STESSO utente ha fatto la STESSA azione dopo un minuto, allora deve crearsi un'azione 
+# (result == True e Action.objects.count() == 2)
+
 class CreateActionTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='testpassword')
