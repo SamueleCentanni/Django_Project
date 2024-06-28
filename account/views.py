@@ -34,15 +34,18 @@ def user_login(request):
         form=LoginForm()
     return render(request, 'account/login.html', {'form': form})
 
-
 @login_required
 def dashboard(request):
-    # non mostro le azioni dell'utente stesso
-    actions = Action.objects.exclude(user=request.user)
+    # Ottieni gli ID degli utenti che l'utente corrente sta seguendo
     following_ids = request.user.following.values_list('id', flat=True)
 
+    # Se l'utente segue qualcuno, ottieni le loro azioni, escludendo le azioni dell'utente stesso
     if following_ids:
-        actions = actions.filter(user_id__in=following_ids)
+        actions = Action.objects.filter(user_id__in=following_ids).exclude(user=request.user)
+    else:
+        # Se l'utente non segue nessuno, restituisci un QuerySet vuoto
+        actions = Action.objects.none()
+
     actions = actions.select_related('user', 'user__profile').prefetch_related('target')[:10]
     return render(request, 'account/dashboard.html', {'section': 'dashboard', 'actions': actions})
 

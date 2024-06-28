@@ -3,8 +3,9 @@ from .models import Action
 import datetime
 from django.utils import timezone
 
-# creo un azione in maniera automatica specificando anche il target
-# aggiungo solo azioni nuove, non quelle ripetute più volte dallo stesso utente nel giro di poco tempo (un minuto)
+# creo un azione in maniera automatica
+# gestisco anche il caso in cui sia specificato anche il target
+# salvo nel DB solo azioni nuove, non quelle ripetute più volte dallo stesso utente nel giro di poco tempo (un minuto)
 def create_action(user, verb, target=None):
     # guardo se qualcuno ha fatto la stessa azione entro un minuto
     now = timezone.now()

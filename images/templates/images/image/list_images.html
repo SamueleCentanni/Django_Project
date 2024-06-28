@@ -12,6 +12,7 @@
         <a href="{{ image.get_absolute_url }}" class="title">
             {{ image.title }}
         </a>
+        <p>Caricato da: <a href="{{ image.user.get_absolute_url }}">{{ image.user.username }}</a></p>
     </div>
 </div>
 

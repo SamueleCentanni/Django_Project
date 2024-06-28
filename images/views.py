@@ -101,12 +101,7 @@ class ImageDeleteView(DeleteView, LoginRequiredMixin, ):
     def get_queryset(self):
         qs = super().get_queryset()
         return qs.filter(user=self.request.user)
-    
-    # aggiunta per poter mostrare il messaggio di eliminazione immagine
-    def delete(self, request, *args, **kwargs):
-        response = super().delete(request, *args, **kwargs)
-        messages.success(self.request, 'Immagine eliminata con successo')
-        return response
+
 
 @login_required
 @require_POST
@@ -171,7 +166,8 @@ def image_list(request, images=None):
 @login_required
 def user_image_list(request):
     images = Image.objects.filter(user=request.user)
-    return image_list(request, images)
+    return render(request, 'images/image/user_images_list.html', {'section': 'your_images', 'images': images})
+
 
 @login_required
 def image_ranking(request):
