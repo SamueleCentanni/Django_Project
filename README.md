@@ -59,9 +59,9 @@ Before you begin, ensure you have installed on your local machine the [requireme
 4. **Set up Redis**:
     - Ensure Redis is installed and running on your local machine. You can download it from [redis.io](https://redis.io/download).
 
-5. **Apply database migrations**:
+5. **Install Requirements**:
     ```sh
-    python manage.py migrate
+    pip3 install -r requirements.txt
     ```
 
 6. **Create a superuser**:
