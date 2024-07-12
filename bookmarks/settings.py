@@ -141,17 +141,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 
-
-# credenziali per Login con Google
-
-AUTHENTICATION_BACKENDS = (
-    'social_core.backends.google.GoogleOAuth2',
-    'django.contrib.auth.backends.ModelBackend',
-)
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1029419724566-ci9orsbes3ngkg6bt9m0srtvecdspjs2.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
-
-
 ABSOLUTE_URL_OVERRIDES = {
     'auth.user': lambda u: reverse_lazy('user_detail', args=[u.username]),
 }
