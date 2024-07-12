@@ -88,16 +88,14 @@ def edit(request):
     return render(request, 'account/edit.html', {'user_form': user_form, 'profile_form': profile_form})
 
 
-
 @login_required
 def user_list(request):
     query = request.GET.get('q')
     if query:
-        user_list = User.objects.filter(Q(username__icontains=query) | Q(first_name__icontains=query))
+        user_list = User.objects.filter(Q(username__icontains=query) | Q(first_name__icontains=query) | Q(last_name__icontains=query))
     else:
         user_list = User.objects.all()
-    
-    # Ottieni tutti gli utenti
+
     paginator = Paginator(user_list, 4)  # Numero di utenti per pagina
 
     page = request.GET.get('page')
@@ -107,10 +105,11 @@ def user_list(request):
         # Se la pagina non è un intero, mostra la prima pagina
         users = paginator.page(1)
     except EmptyPage:
-        # Se la pagina è fuori limite (es. 9999), mostra l'ultima pagina di risultati
+        # Se la pagina è fuori limite, mostra l'ultima pagina di risultati
         users = paginator.page(paginator.num_pages)
 
     return render(request, 'account/user/list.html', {'users': users})
+
 
 
 @login_required

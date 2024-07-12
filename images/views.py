@@ -121,10 +121,12 @@ def image_like(request):
             pass
     return JsonResponse({'status': 'error'})
 
+
 @login_required
 def image_list(request, images=None): 
     if not images:
         images = Image.objects.all()
+        
         # Trova tutti i profili privati
         private_profiles = Profile.objects.filter(private=True)
         users_with_private_profiles = [profile.user.id for profile in private_profiles]
@@ -132,13 +134,12 @@ def image_list(request, images=None):
         # Trova gli utenti che l'utente loggato segue
         followed_users = Contact.objects.filter(user_from=request.user).values_list('user_to_id', flat=True)
         
-        images = images.exclude(user_id__in=users_with_private_profiles)
-
-        # Escludi le immagini dell'utente loggato
-        images = images.exclude(user=request.user)
+        # Escludi le immagini degli utenti con profilo privato che l'utente loggato non segue
+        images = images.exclude(user_id__in=users_with_private_profiles).exclude(user=request.user)
 
         # Includi le immagini degli utenti seguiti dall'utente loggato (anche se sono privati)
-        images = images.union(Image.objects.filter(user_id__in=followed_users))
+        followed_images = Image.objects.filter(user_id__in=followed_users).exclude(user=request.user)
+        images = images.union(followed_images)
         
     # 8 immagini per volta
     paginator = Paginator(images, 8)
@@ -162,6 +163,7 @@ def image_list(request, images=None):
         return render(request, 'images/image/list_images.html', {'section': 'images', 'images': images, 'user': request.user})
 
     return render(request, 'images/image/list.html', {'section': 'images', 'images': images})
+
 
 @login_required
 def user_image_list(request):
