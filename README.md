@@ -31,3 +31,86 @@ This project is a social media web application inspired by Instagram, developed 
   - Each image includes the number of likes, view count, title, description, and the image itself.
 
 This project demonstrates the integration of various web technologies and provides a robust platform for social interaction and media sharing.
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+### Instructions for Use
+
+#### Prerequisites
+
+Before you begin, ensure you have the following installed on your local machine:
+
+- Python (version 3.8 or higher)
+- Django (version 3.2 or higher)
+- Redis
+- Git
+- Pipenv
+
+#### Installation Steps
+
+1. **Clone the repository**:
+    ```sh
+    git clone https://github.com/SamueleCentanni/Django_Project
+    cd Django_Project
+    ```
+
+2. **Install the required packages**:
+    ```sh
+    pipenv install
+
+3. **Create and activate a virtual environment using Pipenv**:
+    ```sh
+    pipenv shell
+    ```  ```
+
+4. **Set up Redis**:
+    - Ensure Redis is installed and running on your local machine. You can download it from [redis.io](https://redis.io/download).
+
+5. **Apply database migrations**:
+    ```sh
+    python manage.py migrate
+    ```
+
+6. **Create a superuser**:
+    ```sh
+    python manage.py createsuperuser
+    ```
+
+7. **Collect static files**:
+    ```sh
+    python manage.py collectstatic
+    ```
+
+8. **Run the development server**:
+    ```sh
+    python manage.py runserver
+    ```
+
+9. **Access the application**:
+    - Open your web browser and go to `http://127.0.0.1:8000/`.
+
+#### Additional Commands
+
+- **Running tests**:
+    ```sh
+    python manage.py test
+    ```
+
+- **Updating image rankings**:
+    - Make sure your `update_image_ranking` management command is properly set up. You can run it using:
+      ```sh
+      python manage.py update_image_ranking
+      ```
+
+#### Notes
+
+- Ensure that the Redis server is running before starting the Django development server.
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+### Credits
+
+This project was developed as part of a Django course, with inspiration from Instagram's social media features.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+### License
+
+This project is licensed under the MIT License.
