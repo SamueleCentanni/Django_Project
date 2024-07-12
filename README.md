@@ -58,6 +58,38 @@ Before you begin, ensure you have installed on your local machine the [requireme
 
 4. **Set up Redis**:
     - Ensure Redis is installed and running on your local machine. You can download it from [redis.io](https://redis.io/download).
+    - 
+    ##### Installation on Windows:
+    - Download Redis from the [Memurai website](https://www.memurai.com/get-memurai) and follow the installation instructions.
+    - Start the Redis server from the command prompt:
+      ```sh
+      memurai-server.exe
+      ```
+
+    ##### Installation on macOS:
+    - Install Redis using Homebrew:
+      ```sh
+      brew install redis
+      ```
+    - Start the Redis server:
+      ```sh
+      brew services start redis
+      ```
+
+    ##### Installation on Linux:
+    - Install Redis using your package manager (example for Ubuntu):
+      ```sh
+      sudo apt update
+      sudo apt install redis-server
+      ```
+    - Start the Redis server:
+      ```sh
+      sudo systemctl start redis
+      ```
+    - Enable Redis to start on boot:
+      ```sh
+      sudo systemctl enable redis
+      ```
 
 5. **Install Requirements**:
     ```sh
