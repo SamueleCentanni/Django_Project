@@ -24,8 +24,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^account/', include('account.urls')),
+    path('', include('account.urls')),
     re_path(r'^images/', include('images.urls', namespace='images')),
-    path('social-auth/', include('social_django.urls', namespace='social')),
 ]
 
 if settings.DEBUG:
