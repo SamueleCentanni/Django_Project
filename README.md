@@ -81,7 +81,8 @@ Before you begin, ensure you have installed on your local machine the [requireme
 
 - **Running tests**:
     ```sh
-    python manage.py test
+    python manage.py test account
+    python manage.py test actions
     ```
 
 - **Updating image rankings**:
