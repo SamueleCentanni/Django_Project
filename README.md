@@ -37,13 +37,7 @@ This project demonstrates the integration of various web technologies and provid
 
 #### Prerequisites
 
-Before you begin, ensure you have the following installed on your local machine:
-
-- Python (version 3.8 or higher)
-- Django (version 3.2 or higher)
-- Redis
-- Git
-- Pipenv
+Before you begin, ensure you have installed on your local machine the [requirements.txt](https://github.com/SamueleCentanni/Django_Project/blob/main/requirements.txt) file.
 
 #### Installation Steps
 
@@ -75,17 +69,12 @@ Before you begin, ensure you have the following installed on your local machine:
     python manage.py createsuperuser
     ```
 
-7. **Collect static files**:
-    ```sh
-    python manage.py collectstatic
-    ```
-
-8. **Run the development server**:
+7. **Run the development server**:
     ```sh
     python manage.py runserver
     ```
 
-9. **Access the application**:
+8. **Access the application**:
     - Open your web browser and go to `http://127.0.0.1:8000/`.
 
 #### Additional Commands
@@ -96,9 +85,9 @@ Before you begin, ensure you have the following installed on your local machine:
     ```
 
 - **Updating image rankings**:
-    - Make sure your `update_image_ranking` management command is properly set up. You can run it using:
+    - Make sure your `update_ranking` management command is properly set up. You can run it using:
       ```sh
-      python manage.py update_image_ranking
+      python manage.py update_ranking
       ```
 
 #### Notes
