@@ -30,10 +30,9 @@ This project is a social media web application inspired by Instagram, developed 
 - **Image Details**:
   - Each image includes the number of likes, view count, title, description, and the image itself.
 
-This project demonstrates the integration of various web technologies and provides a robust platform for social interaction and media sharing.
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-### Instructions for Use
+## Instructions for Use
 
 #### Prerequisites
 
@@ -50,11 +49,12 @@ Before you begin, ensure you have installed on your local machine the [requireme
 2. **Install the required packages**:
     ```sh
     pipenv install
+    ```
 
 3. **Create and activate a virtual environment using Pipenv**:
     ```sh
     pipenv shell
-    ```  ```
+    ```  
 
 4. **Set up Redis**:
     - Ensure Redis is installed and running on your local machine. You can download it from [redis.io](https://redis.io/download).
