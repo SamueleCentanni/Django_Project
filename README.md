@@ -58,7 +58,7 @@ Before you begin, ensure you have installed on your local machine the [requireme
 
 4. **Set up Redis**:
     - Ensure Redis is installed and running on your local machine. You can download it from [redis.io](https://redis.io/download).
-    - 
+    
     ##### Installation on Windows:
     - Download Redis from the [Memurai website](https://www.memurai.com/get-memurai) and follow the installation instructions.
     - Start the Redis server from the command prompt:
